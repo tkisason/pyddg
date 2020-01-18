@@ -35,7 +35,7 @@ def DDG(query, pages=1, kl="us-en"):
         data = {"q": query, "kl": kl}
         for line in requests.get(url, headers=headers, data=data).content.split(b"\n"):
             if line.find(b"class='result-link'") >= 0:
-                link = re.findall(b'href=".*"', line)[0][6:-1]
-                desc = re.findall(b">.*</a>", line)[0][1:-4]
+                link = re.search(b'href="([^"]*)', line).group(1)
+                desc = re.search(b">.*</a>", line).group(0)
                 urls[link] = desc
     return urls
